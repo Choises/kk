@@ -1,0 +1,142 @@
+<html lang="en"><head>
+  
+  <meta charset="UTF-8">
+   <title>YouTube </title>
+
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+* {
+  font-family: "Roboto", sans-serif;
+}
+
+#header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  flex-direction: row;
+  height: 50px;
+}
+
+#header i {
+  font-size: 1.5rem;
+  margin-right: 10px;
+}
+
+#header img {
+  width: 85px;
+  height: 25px;
+}
+
+.search-bar {
+  display: flex;
+  width: 30%;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px;
+  border-radius: 20px;
+  border: 1px solid #f0f0f0;
+}
+
+.search-bar input {
+  border-radius: 20px 0px 0px 20px;
+  border-color: #f0f0f0;
+  font-size: 1rem;
+  padding: 6px;
+  border: none;
+  text-indent: 5px;
+}
+
+.search-bar input:focus {
+  outline: none;
+}
+
+.search-bar button {
+  background: #f8f8f8;
+  border: none;
+  border-radius: 0px 20px 20px 0px;
+  cursor: pointer;
+}
+
+.search-bar button:hover {
+  background: #f0f0f0;
+}
+
+#app {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+#app div {
+  display: flex;
+  flex-direction: column;
+  height: 250px;
+  width: 300px;
+  margin-bottom: 0;
+  overflow: hidden;
+}
+
+#app div img {
+  border-radius: 12px;
+}
+</style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script>
+  
+</head>
+
+<body translate="no">
+  <header id="header">
+    <div class="left">
+      <a href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
+      <a href="#">
+        <img src="https://xat.gr/rooms/addons/youtube/files/youtube.svg" alt="">
+      </a>
+    </div>
+    <div class="search-bar">
+      <input type="text" placeholder="Search" class="input">
+      <button onclick="searchFunc()"><img src="https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/search-512.png" alt="" style="width:25px;"></button>
+    </div>
+  </header>
+  <div id="app"><div><iframe src="https://www.youtube.com/embed/undefined"></iframe><p>TRENDING</p></div><div></div></div>
+  
+    <script id="rendered-js">
+let api_key = "AIzaSyDhk1jC3jeN5oxfCWeM5fz3oJxQBdBge4Q";
+
+function myfunc(search) {
+  fetch(
+  `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${search}&key=${api_key}`).
+
+  then(res => res.json()).
+  then(data => {
+    console.log(data);
+    let container = document.getElementById("app");
+    container.innerHTML = "";
+    data.items.forEach(item => {
+      let thumbnail = item.snippet.thumbnails.medium.url;
+      let videoTitle = item.snippet.title;
+      let videoId = item.id.videoId;
+      let videoContainer = document.createElement("div");
+      videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}"></iframe>`;
+      container.appendChild(videoContainer);
+      let title = document.createElement("p");
+      title.innerText = videoTitle;
+      videoContainer.appendChild(title);
+    });
+  });
+}
+
+myfunc("trending");
+function searchFunc() {
+  let inp = document.querySelector(".input").value;
+  myfunc(inp);
+}
+//
+  </script>
+
+</body></html>
